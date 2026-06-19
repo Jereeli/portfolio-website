@@ -28,22 +28,6 @@
       min-height: 100vh;
     }
 
-    /* ── SCANLINES overlay ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.07) 2px,
-        rgba(0,0,0,0.07) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
-    }
-
     /* ── NAV ── */
     nav {
       position: sticky;
@@ -177,14 +161,52 @@
     .img-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
     .img-grid img {
       width: 100%;
-      height: 200px;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
       display: block;
       border: 1px solid #1a1a1a;
       filter: brightness(0.9);
       transition: filter 0.2s, border-color 0.2s;
+      cursor: zoom-in;
     }
     .img-grid img:hover { filter: brightness(1.05); border-color: var(--green-dim); }
+
+    /* ── IMAGE LIGHTBOX ── */
+    .img-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .img-modal-backdrop.open { display: flex; }
+    .img-modal-inner {
+      position: relative;
+      max-width: 92vw;
+      max-height: 92vh;
+    }
+    .img-modal-inner img {
+      max-width: 92vw;
+      max-height: 88vh;
+      object-fit: contain;
+      display: block;
+      border: 2px solid var(--green);
+    }
+    .img-modal-inner .close-btn {
+      position: absolute;
+      top: -34px;
+      right: 0;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--green);
+      background: none;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 2px;
+    }
+    .img-modal-inner .close-btn:hover { color: #fff; }
 
     /* ── VIDEO THUMBNAIL (clickable) ── */
     .vid-thumb {
@@ -274,6 +296,43 @@
       max-width: 500px;
       margin: 0 auto;
     }
+    .cobra-links {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    .cobra-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .cobra-links a.link-primary {
+      color: #000;
+      background: var(--green);
+      border: 1px solid var(--green);
+    }
+    .cobra-links a.link-primary:hover {
+      background: #00ffaa;
+      box-shadow: 0 0 18px rgba(0,255,136,0.5);
+    }
+    .cobra-links a.link-secondary {
+      color: var(--green);
+      background: transparent;
+      border: 1px solid var(--green-dim);
+    }
+    .cobra-links a.link-secondary:hover {
+      background: rgba(0,255,136,0.07);
+      border-color: var(--green);
+      box-shadow: 0 0 12px rgba(0,255,136,0.2);
+    }
 
     /* ── VIDEO MODAL ── */
     .modal-backdrop {
@@ -337,9 +396,9 @@
 <nav>
   <a href="#" class="logo">JH</a>
   <a href="#intro">INTRO</a>
-  <a href="#programming">PROGRAMMING</a>
-  <a href="#cad">CAD</a>
   <a href="#cobra">COBRA MEDICAL</a>
+  <a href="#cad">CAD</a>
+  <a href="#programming">PROGRAMMING</a>
 </nav>
 
 <!-- HERO -->
@@ -370,6 +429,179 @@
         ▸ GitHub
       </a>
     </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       COBRA MEDICAL
+  ════════════════════════════════════ -->
+  <section class="section" id="cobra">
+    <h2 class="section-title">COBRA MEDICAL OY</h2>
+    <div class="cobra-placeholder">
+      <div class="lock">🔒</div>
+      <h3>DESIGNS RESTRICTED DUE COMPANY SECRETS</h3>
+      <p>
+        I am part of the product development team at Cobra Medical Oy, a medical technology
+        startup. I have designed an automatic tourniquet and
+        built its prototype. Due to an NDA, images and details cannot be published here yet.
+        Check back later, this section will be updated as information becomes releasable.
+      </p>
+      <div class="cobra-links">
+        <a href="https://cobramedical.fi/" target="_blank" class="link-primary">
+          ▸ cobramedical.fi
+        </a>
+        <a href="https://drive.google.com/file/d/1-236ngnlR88A4S3cKjbVeyygNQlbQy4I/view?usp=sharing" target="_blank" class="link-secondary">
+          ▸ Pitch Deck
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       CAD PROJECTS
+  ════════════════════════════════════ -->
+  <section class="section" id="cad">
+    <h2 class="section-title">CAD PROJECTS</h2>
+
+    <div class="project" style="border-left-color: #333;">
+      <p>
+        A selection of my CAD projects made in and out of school. Every project shown here
+        was designed and modeled entirely by me from scratch — I only list projects I
+        conceived and built independently. Models are made in SolidWorks and/or Siemens NX.
+      </p>
+    </div>
+
+    <p class="subsection-title">// COBRA MEDICAL</p>
+    <div class="project">
+      <h3>COBRA TQ — AUTOMATIC TOURNIQUET</h3>
+      <p>
+        CAD model of the second prototype I designed for Cobra Medical. The CAD model is
+        simplified due to the NDA.
+      </p>
+      <div class="img-grid" style="grid-template-columns: 1fr;">
+        <img src="images/cobraTQ.png" alt="Cobra TQ automatic tourniquet CAD model" onclick="openImg(this.src,this.alt)" />
+      </div>
+    </div>
+
+    <p class="subsection-title">// ROBOT GRIPPER</p>
+    <div class="project">
+      <h3>PNEUMATIC ROBOT GRIPPER</h3>
+      <p>
+        Designed and modeled a pneumatically actuated robot hand capable of lifting and
+        relocating boxes of various sizes. Requirements: the gripper must handle all DHL
+        standard box sizes and reliably move them between positions.
+      </p>
+      <div class="img-grid cols-3">
+        <img src="images/image6.jpeg" alt="Robot gripper render 1" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image7.png"  alt="Robot gripper render 2" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image8.png"  alt="Robot gripper render 3" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image9.png"  alt="Robot gripper render 4" onclick="openImg(this.src,this.alt)" />
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/swyA3pB_s3A')">
+          <img src="images/image10.jpg" alt="Robot gripper video thumbnail" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">// REMMI-TEAM</p>
+    <div class="project">
+      <h3>REMMI-TEAM VEHICLE PARTS</h3>
+      <p>
+        Alongside school I participate in the university's REMMI-Team. The team's goal is
+        to design and build a fuel-efficient single-cylinder combustion engine vehicle for
+        Shell's annual Eco-Marathon, a Europe-wide competition. Below: the vehicle and one
+        of the parts I designed for it.
+      </p>
+      <div class="img-grid cols-2">
+        <img src="images/image11.png"  alt="REMMI vehicle" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image12.jpeg" alt="REMMI vehicle part" onclick="openImg(this.src,this.alt)" style="height: 320px; object-fit: cover; object-position: center;" />
+      </div>
+      <h3 style="margin-top: 24px;">BREATHER (HUOHOTIN)</h3>
+      <p>
+        Designed, modeled, and 3D-printed a new breather component for the vehicle.
+        Model made in SolidWorks.
+      </p>
+      <div class="img-grid cols-2">
+        <img src="images/image13.jpeg" alt="Breather model 1" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image14.jpeg" alt="Breather model 2" onclick="openImg(this.src,this.alt)" />
+      </div>
+    </div>
+
+    <p class="subsection-title">// CHESS PROJECT</p>
+    <div class="project">
+      <h3>CHESS PROJECT</h3>
+      <p>
+        A personal project in which I design, model, and 3D-print a full chess set — board
+        and every piece. Each piece is intended to have a unique appearance and extra
+        mechanical features. I'm also designing an Arduino-based circuit to embed in the
+        board so it can detect piece movements and track player times (using strain gauges
+        and an ESP32 microcontroller with weighted pieces).
+      </p>
+
+      <h3 style="margin-top: 24px; color: #aaffcc;">KNIGHT (RATSU)</h3>
+      <p>
+        Modeled and designed in Siemens NX. Features a simple mechanism: when the piece
+        is lifted, the horse's legs extend outward via a shaft — and retract when placed
+        back on the board.
+      </p>
+      <div class="img-grid cols-2">
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/oW8f956kfwo')">
+          <img src="images/image15.jpg" alt="Knight render" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/VmO_JhmVCO8')">
+          <img src="images/image16.jpg" alt="Knight mechanism" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 30px; color: #aaffcc;">BISHOP (LÄHETTI)</h3>
+      <div class="img-grid cols-2">
+        <img src="images/image17.jpeg" alt="Bishop render 1" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image18.png"  alt="Bishop render 2" onclick="openImg(this.src,this.alt)" />
+      </div>
+    </div>
+
+    <p class="subsection-title">// PRODUCT DESIGN</p>
+    <div class="project">
+      <h3>NOISE-CANCELING SPEAKER</h3>
+      <p>
+        In a product design course, my task was to design a new technological product with
+        market demand. My concept: a smart speaker sold to property owners or businesses
+        near constant low-frequency noise sources (railways, airports, amusement parks).
+        The speaker cancels repetitive low-frequency rumble using AI, a PID controller,
+        and active noise cancellation. The product design included a full 3D model — below
+        are several design iterations and a product presentation video.
+      </p>
+      <div class="img-grid cols-2">
+        <img src="images/image19.png" alt="Speaker design iteration 1" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image20.png" alt="Speaker design iteration 2" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image21.png" alt="Speaker design iteration 3" onclick="openImg(this.src,this.alt)" />
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/c1oN9Eom-zY')">
+          <img src="images/image22.jpg" alt="Speaker product video thumbnail" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">// OTHER CAD MODELS</p>
+    <div class="project">
+      <h3>OTHER CAD MODELS</h3>
+      <div class="img-grid cols-2">
+        <img src="images/image23.png" alt="CAD model 1" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image24.png" alt="CAD model 2" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image25.png" alt="CAD model 3" onclick="openImg(this.src,this.alt)" />
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/CHUkbBb-v3c')">
+          <img src="images/image26.jpg" alt="Other CAD video thumbnail" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- ════════════════════════════════════
@@ -467,164 +699,11 @@
         controlling player timers.
       </p>
       <div class="img-grid cols-2">
-        <img src="images/image4.png" alt="Chess board PCB schematic" />
-        <img src="images/image5.png" alt="Chess board PCB layout" />
+        <img src="images/image4.png" alt="Chess board PCB schematic" onclick="openImg(this.src,this.alt)" />
+        <img src="images/image5.png" alt="Chess board PCB layout" onclick="openImg(this.src,this.alt)" />
       </div>
     </div>
 
-  </section>
-
-  <!-- ════════════════════════════════════
-       CAD PROJECTS
-  ════════════════════════════════════ -->
-  <section class="section" id="cad">
-    <h2 class="section-title">CAD PROJECTS</h2>
-
-    <div class="project" style="border-left-color: #333;">
-      <p>
-        A selection of my CAD projects made in and out of school. Every project shown here
-        was designed and modeled entirely by me from scratch — I only list projects I
-        conceived and built independently. Models are made in SolidWorks and/or Siemens NX.
-      </p>
-    </div>
-
-    <p class="subsection-title">// ROBOT GRIPPER</p>
-    <div class="project">
-      <h3>PNEUMATIC ROBOT GRIPPER</h3>
-      <p>
-        Designed and modeled a pneumatically actuated robot hand capable of lifting and
-        relocating boxes of various sizes. Requirements: the gripper must handle all DHL
-        standard box sizes and reliably move them between positions.
-      </p>
-      <div class="img-grid cols-3">
-        <img src="images/image6.jpeg" alt="Robot gripper render 1" />
-        <img src="images/image7.png"  alt="Robot gripper render 2" />
-        <img src="images/image8.png"  alt="Robot gripper render 3" />
-        <img src="images/image9.png"  alt="Robot gripper render 4" />
-        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/swyA3pB_s3A')">
-          <img src="images/image10.jpg" alt="Robot gripper video thumbnail" />
-          <div class="play-btn"><div class="play-icon"></div></div>
-          <span class="play-label">CLICK TO WATCH</span>
-        </div>
-      </div>
-    </div>
-
-    <p class="subsection-title">// REMMI-TEAM</p>
-    <div class="project">
-      <h3>REMMI-TEAM VEHICLE PARTS</h3>
-      <p>
-        Alongside school I participate in the university's REMMI-Team. The team's goal is
-        to design and build a fuel-efficient single-cylinder combustion engine vehicle for
-        Shell's annual Eco-Marathon, a Europe-wide competition. Below: the vehicle and one
-        of the parts I designed for it.
-      </p>
-      <div class="img-grid cols-2">
-        <img src="images/image11.png"  alt="REMMI vehicle" />
-        <img src="images/image12.jpeg" alt="REMMI vehicle part" />
-      </div>
-      <h3 style="margin-top: 24px;">BREATHER (HUOHOTIN)</h3>
-      <p>
-        Designed, modeled, and 3D-printed a new breather component for the vehicle.
-        Model made in SolidWorks.
-      </p>
-      <div class="img-grid cols-2">
-        <img src="images/image13.jpeg" alt="Breather model 1" />
-        <img src="images/image14.jpeg" alt="Breather model 2" />
-      </div>
-    </div>
-
-    <p class="subsection-title">// CHESS PROJECT</p>
-    <div class="project">
-      <h3>CHESS PROJECT</h3>
-      <p>
-        A personal project in which I design, model, and 3D-print a full chess set — board
-        and every piece. Each piece is intended to have a unique appearance and extra
-        mechanical features. I'm also designing an Arduino-based circuit to embed in the
-        board so it can detect piece movements and track player times (using strain gauges
-        and an ESP32 microcontroller with weighted pieces).
-      </p>
-
-      <h3 style="margin-top: 24px; color: #aaffcc;">KNIGHT (RATSU)</h3>
-      <p>
-        Modeled and designed in Siemens NX. Features a simple mechanism: when the piece
-        is lifted, the horse's legs extend outward via a shaft — and retract when placed
-        back on the board.
-      </p>
-      <div class="img-grid cols-2">
-        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/oW8f956kfwo')">
-          <img src="images/image15.jpg" alt="Knight render" />
-          <div class="play-btn"><div class="play-icon"></div></div>
-          <span class="play-label">CLICK TO WATCH</span>
-        </div>
-        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/VmO_JhmVCO8')">
-          <img src="images/image16.jpg" alt="Knight mechanism" />
-          <div class="play-btn"><div class="play-icon"></div></div>
-          <span class="play-label">CLICK TO WATCH</span>
-        </div>
-      </div>
-
-      <h3 style="margin-top: 30px; color: #aaffcc;">BISHOP (LÄHETTI)</h3>
-      <div class="img-grid cols-2">
-        <img src="images/image17.jpeg" alt="Bishop render 1" />
-        <img src="images/image18.png"  alt="Bishop render 2" />
-      </div>
-    </div>
-
-    <p class="subsection-title">// PRODUCT DESIGN</p>
-    <div class="project">
-      <h3>NOISE-CANCELING SPEAKER</h3>
-      <p>
-        In a product design course, my task was to design a new technological product with
-        market demand. My concept: a smart speaker sold to property owners or businesses
-        near constant low-frequency noise sources (railways, airports, amusement parks).
-        The speaker cancels repetitive low-frequency rumble using AI, a PID controller,
-        and active noise cancellation. The product design included a full 3D model — below
-        are several design iterations and a product presentation video.
-      </p>
-      <div class="img-grid cols-2">
-        <img src="images/image19.png" alt="Speaker design iteration 1" />
-        <img src="images/image20.png" alt="Speaker design iteration 2" />
-        <img src="images/image21.png" alt="Speaker design iteration 3" />
-        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/c1oN9Eom-zY')">
-          <img src="images/image22.jpg" alt="Speaker product video thumbnail" />
-          <div class="play-btn"><div class="play-icon"></div></div>
-          <span class="play-label">CLICK TO WATCH</span>
-        </div>
-      </div>
-    </div>
-
-    <p class="subsection-title">// OTHER CAD MODELS</p>
-    <div class="project">
-      <h3>OTHER CAD MODELS</h3>
-      <div class="img-grid cols-2">
-        <img src="images/image23.png" alt="CAD model 1" />
-        <img src="images/image24.png" alt="CAD model 2" />
-        <img src="images/image25.png" alt="CAD model 3" />
-        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/CHUkbBb-v3c')">
-          <img src="images/image26.jpg" alt="Other CAD video thumbnail" />
-          <div class="play-btn"><div class="play-icon"></div></div>
-          <span class="play-label">CLICK TO WATCH</span>
-        </div>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- ════════════════════════════════════
-       COBRA MEDICAL
-  ════════════════════════════════════ -->
-  <section class="section" id="cobra">
-    <h2 class="section-title">COBRA MEDICAL OY</h2>
-    <div class="cobra-placeholder">
-      <div class="lock">🔒</div>
-      <h3>CONTENT COMING SOON</h3>
-      <p>
-        I am part of the product development team at Cobra Medical Oy, a medical technology
-        startup. I have designed the valve structure for their automatic tourniquet and
-        built its prototype. Due to an NDA, images and details cannot be published here yet.
-        Check back later — this section will be updated as information becomes releasable.
-      </p>
-    </div>
   </section>
 
 </main>
@@ -639,6 +718,14 @@
   </p>
 </footer>
 
+<!-- IMAGE LIGHTBOX -->
+<div class="img-modal-backdrop" id="imgModal" onclick="closeImg(event)">
+  <div class="img-modal-inner">
+    <button class="close-btn" onclick="closeImg()">[ X ] CLOSE</button>
+    <img id="modalImg" src="" alt="" />
+  </div>
+</div>
+
 <!-- VIDEO MODAL -->
 <div class="modal-backdrop" id="videoModal" onclick="closeModal(event)">
   <div class="modal-inner">
@@ -652,6 +739,19 @@
 </div>
 
 <script>
+  function openImg(src, alt) {
+    document.getElementById('modalImg').src = src;
+    document.getElementById('modalImg').alt = alt || '';
+    document.getElementById('imgModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeImg(e) {
+    if (e && e.target !== document.getElementById('imgModal') && !e.target.classList.contains('close-btn')) return;
+    document.getElementById('modalImg').src = '';
+    document.getElementById('imgModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   function openModal(url) {
     document.getElementById('modalIframe').src = url + '?autoplay=1&rel=0';
     document.getElementById('videoModal').classList.add('open');
@@ -663,12 +763,12 @@
     document.getElementById('videoModal').classList.remove('open');
     document.body.style.overflow = '';
   }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal({}); });
-  // Fix close on Escape: override the guard
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       document.getElementById('modalIframe').src = '';
       document.getElementById('videoModal').classList.remove('open');
+      document.getElementById('modalImg').src = '';
+      document.getElementById('imgModal').classList.remove('open');
       document.body.style.overflow = '';
     }
   });
