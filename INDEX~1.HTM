@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeremia Haapasalmi – Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #00ff88;
+      --green-dim: #00aa55;
+      --bg: #000;
+      --bg2: #0a0a0a;
+      --border: #00ff88;
+      --text: #e8e8e8;
+      --text-dim: #888;
+      --red: #ff3355;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      line-height: 2;
+      min-height: 100vh;
+    }
+
+    /* ── SCANLINES overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.07) 2px,
+        rgba(0,0,0,0.07) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #000;
+      border-bottom: 2px solid var(--green);
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+    nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 14px 18px;
+      font-size: 8px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      border-right: 1px solid #111;
+      transition: color 0.15s, background 0.15s;
+    }
+    nav a:hover { color: var(--green); background: #0a150e; }
+    nav a.logo {
+      color: var(--green);
+      font-size: 9px;
+      border-right: 2px solid var(--green);
+      margin-right: 6px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 80px 24px 60px;
+      text-align: center;
+      border-bottom: 2px solid #111;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,255,136,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(14px, 3vw, 28px);
+      color: var(--green);
+      text-shadow: 0 0 20px rgba(0,255,136,0.5), 0 0 40px rgba(0,255,136,0.2);
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 9px;
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 2.2;
+    }
+    .hero .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 18px;
+      background: var(--green);
+      margin-left: 4px;
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── MAIN LAYOUT ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 80px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid #111;
+    }
+    .section-title {
+      font-size: clamp(12px, 2vw, 18px);
+      color: var(--green);
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--green);
+      text-shadow: 0 0 10px rgba(0,255,136,0.3);
+    }
+    .section-title::before { content: '> '; color: var(--green-dim); }
+
+    /* ── PROJECT CARD ── */
+    .project {
+      background: var(--bg2);
+      border: 1px solid #1a1a1a;
+      border-left: 3px solid var(--green-dim);
+      padding: 28px;
+      margin-bottom: 40px;
+    }
+    .project:hover { border-left-color: var(--green); }
+    .project h3 {
+      font-size: 10px;
+      color: var(--green);
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+    .project p {
+      font-size: 9px;
+      color: var(--text-dim);
+      line-height: 2.4;
+      margin-bottom: 20px;
+    }
+
+    /* ── SUBSECTION HEADING ── */
+    .subsection-title {
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 3px;
+      margin: 50px 0 20px;
+      padding-left: 10px;
+      border-left: 2px solid var(--green-dim);
+    }
+
+    /* ── IMAGE GRID ── */
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    .img-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .img-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .img-grid img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid #1a1a1a;
+      filter: brightness(0.9);
+      transition: filter 0.2s, border-color 0.2s;
+    }
+    .img-grid img:hover { filter: brightness(1.05); border-color: var(--green-dim); }
+
+    /* ── VIDEO THUMBNAIL (clickable) ── */
+    .vid-thumb {
+      position: relative;
+      display: block;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .vid-thumb img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid #1a1a1a;
+      transition: filter 0.2s, border-color 0.2s;
+    }
+    .vid-thumb:hover img { filter: brightness(1.1); border-color: var(--green); }
+    .vid-thumb .play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.35);
+      transition: background 0.2s;
+    }
+    .vid-thumb:hover .play-btn { background: rgba(0,0,0,0.2); }
+    .vid-thumb .play-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--green);
+      clip-path: polygon(20% 10%, 85% 50%, 20% 90%);
+      filter: drop-shadow(0 0 8px rgba(0,255,136,0.8));
+      transition: transform 0.15s;
+    }
+    .vid-thumb:hover .play-icon { transform: scale(1.15); }
+    .vid-thumb .play-label {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 6px;
+      color: var(--green);
+      letter-spacing: 2px;
+      white-space: nowrap;
+      text-shadow: 0 0 6px rgba(0,255,136,0.8);
+    }
+
+    /* ── LINK BUTTON ── */
+    .btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 18px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--green);
+      border: 1px solid var(--green-dim);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      margin-right: 10px;
+    }
+    .btn:hover { background: rgba(0,255,136,0.1); border-color: var(--green); }
+    .btn.ghost { color: var(--text-dim); border-color: #333; }
+    .btn.ghost:hover { color: var(--text); border-color: #555; background: #111; }
+
+    /* ── COBRA PLACEHOLDER ── */
+    .cobra-placeholder {
+      border: 1px dashed #333;
+      padding: 50px 30px;
+      text-align: center;
+    }
+    .cobra-placeholder .lock {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .cobra-placeholder h3 {
+      font-size: 10px;
+      color: var(--green);
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+    .cobra-placeholder p {
+      font-size: 8px;
+      color: var(--text-dim);
+      line-height: 2.4;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ── VIDEO MODAL ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-inner {
+      position: relative;
+      width: min(90vw, 800px);
+      max-height: 90vh;
+    }
+    .modal-inner .close-btn {
+      position: absolute;
+      top: -36px;
+      right: 0;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--green);
+      background: none;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 2px;
+    }
+    .modal-inner .close-btn:hover { color: #fff; }
+    .modal-inner iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: 2px solid var(--green);
+      display: block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 2px solid #111;
+      padding: 30px 24px;
+      text-align: center;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+    }
+    footer a { color: var(--green-dim); text-decoration: none; }
+    footer a:hover { color: var(--green); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .img-grid.cols-2, .img-grid.cols-3 { grid-template-columns: 1fr; }
+      nav a { padding: 12px 12px; font-size: 7px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#" class="logo">JH</a>
+  <a href="#intro">INTRO</a>
+  <a href="#programming">PROGRAMMING</a>
+  <a href="#cad">CAD</a>
+  <a href="#cobra">COBRA MEDICAL</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <h1>JEREMIA HAAPASALMI<span class="cursor"></span></h1>
+  <p>
+    A collection of projects showcasing my skills in programming and CAD modeling,
+    developed alongside my studies. Projects range from embedded systems and C++/Python
+    programs to mechanical design and PCB design.
+  </p>
+</header>
+
+<main>
+
+  <!-- ════════════════════════════════════
+       INTRO
+  ════════════════════════════════════ -->
+  <section class="section" id="intro">
+    <h2 class="section-title">INTRO</h2>
+    <div class="project">
+      <p>
+        The idea of this portfolio is to showcase a few projects I've made alongside school,
+        related to programming and modeling. These projects highlight my skills across
+        different software tools and reflect my areas of interest. Most of my programming
+        projects are also available on GitHub, with source code and documentation.
+      </p>
+      <a href="https://github.com/Jereeli/githubPortfolio" target="_blank" class="btn">
+        ▸ GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       PROGRAMMING PROJECTS
+  ════════════════════════════════════ -->
+  <section class="section" id="programming">
+    <h2 class="section-title">PROGRAMMING PROJECTS</h2>
+
+    <p class="subsection-title">// ARDUINO</p>
+
+    <!-- PID Lighting -->
+    <div class="project">
+      <h3>AUTOMATIC PID-CONTROLLED LIGHTING</h3>
+      <p>
+        An automatic light intensity controller implemented with a closed-loop PID regulator.
+        It maintains a constant light level and responds immediately to changes in ambient
+        lighting. The graph shows the target illumination level in orange and the actual
+        measured level in blue.
+      </p>
+      <div class="img-grid" style="grid-template-columns: 1fr;">
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/72AaYRsuyN8')">
+          <img src="images/image1.jpg" alt="PID Lighting graph" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lawn mower -->
+    <div class="project">
+      <h3>LAWN MOWER POWER CONTROL</h3>
+      <p>
+        A simple program that simulates the startup sequence and safety mechanisms of a
+        ride-on lawn mower, implemented on an Arduino. Simulated using the Wokwi online
+        circuit simulator — source code and full schematic available at the link below.
+      </p>
+      <a href="https://wokwi.com/projects/450620300817669121" target="_blank" class="btn">
+        ▸ Open Wokwi Simulation
+      </a>
+    </div>
+
+    <p class="subsection-title">// C++ &amp; PYTHON — EXAMPLE VIDEOS</p>
+    <div class="project">
+      <p>
+        The rest of my programming projects (C++ and Python) are on GitHub with full
+        source code and descriptions. Below are demo videos of two programs that consist
+        of multiple files — so instead of asking you to compile them, I've recorded short
+        walkthroughs.
+      </p>
+      <a href="https://github.com/Jereeli/githubPortfolio" target="_blank" class="btn">
+        ▸ View All on GitHub
+      </a>
+    </div>
+
+    <!-- Word game -->
+    <div class="project">
+      <h3>C++ WORD GAME</h3>
+      <p>
+        A word game programmed in C++. The video demonstrates the program running and
+        showcases some of its features. Full source code and detailed comments are on GitHub.
+      </p>
+      <div class="img-grid" style="grid-template-columns: 1fr;">
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/h591suAqdCk')">
+          <img src="images/image2.jpg" alt="C++ Word Game" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playlist manager -->
+    <div class="project">
+      <h3>C++ PLAYLIST MANAGER</h3>
+      <p>
+        A playlist management program written in C++. The video demonstrates example
+        operations the program can handle. Source code and detailed documentation available on GitHub.
+      </p>
+      <div class="img-grid" style="grid-template-columns: 1fr;">
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/DVqbvwYOOCc')">
+          <img src="images/image3.jpg" alt="C++ Playlist Manager" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">// PCB DESIGN</p>
+
+    <!-- Chess PCB -->
+    <div class="project">
+      <h3>CHESS BOARD PCB</h3>
+      <p>
+        I designed and modeled a PCB for my chess board project using KiCAD. The board
+        will be used to automate a physical chess board — detecting piece movements and
+        controlling player timers.
+      </p>
+      <div class="img-grid cols-2">
+        <img src="images/image4.png" alt="Chess board PCB schematic" />
+        <img src="images/image5.png" alt="Chess board PCB layout" />
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════
+       CAD PROJECTS
+  ════════════════════════════════════ -->
+  <section class="section" id="cad">
+    <h2 class="section-title">CAD PROJECTS</h2>
+
+    <div class="project" style="border-left-color: #333;">
+      <p>
+        A selection of my CAD projects made in and out of school. Every project shown here
+        was designed and modeled entirely by me from scratch — I only list projects I
+        conceived and built independently. Models are made in SolidWorks and/or Siemens NX.
+      </p>
+    </div>
+
+    <p class="subsection-title">// ROBOT GRIPPER</p>
+    <div class="project">
+      <h3>PNEUMATIC ROBOT GRIPPER</h3>
+      <p>
+        Designed and modeled a pneumatically actuated robot hand capable of lifting and
+        relocating boxes of various sizes. Requirements: the gripper must handle all DHL
+        standard box sizes and reliably move them between positions.
+      </p>
+      <div class="img-grid cols-3">
+        <img src="images/image6.jpeg" alt="Robot gripper render 1" />
+        <img src="images/image7.png"  alt="Robot gripper render 2" />
+        <img src="images/image8.png"  alt="Robot gripper render 3" />
+        <img src="images/image9.png"  alt="Robot gripper render 4" />
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/swyA3pB_s3A')">
+          <img src="images/image10.jpg" alt="Robot gripper video thumbnail" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">// REMMI-TEAM</p>
+    <div class="project">
+      <h3>REMMI-TEAM VEHICLE PARTS</h3>
+      <p>
+        Alongside school I participate in the university's REMMI-Team. The team's goal is
+        to design and build a fuel-efficient single-cylinder combustion engine vehicle for
+        Shell's annual Eco-Marathon, a Europe-wide competition. Below: the vehicle and one
+        of the parts I designed for it.
+      </p>
+      <div class="img-grid cols-2">
+        <img src="images/image11.png"  alt="REMMI vehicle" />
+        <img src="images/image12.jpeg" alt="REMMI vehicle part" />
+      </div>
+      <h3 style="margin-top: 24px;">BREATHER (HUOHOTIN)</h3>
+      <p>
+        Designed, modeled, and 3D-printed a new breather component for the vehicle.
+        Model made in SolidWorks.
+      </p>
+      <div class="img-grid cols-2">
+        <img src="images/image13.jpeg" alt="Breather model 1" />
+        <img src="images/image14.jpeg" alt="Breather model 2" />
+      </div>
+    </div>
+
+    <p class="subsection-title">// CHESS PROJECT</p>
+    <div class="project">
+      <h3>CHESS PROJECT</h3>
+      <p>
+        A personal project in which I design, model, and 3D-print a full chess set — board
+        and every piece. Each piece is intended to have a unique appearance and extra
+        mechanical features. I'm also designing an Arduino-based circuit to embed in the
+        board so it can detect piece movements and track player times (using strain gauges
+        and an ESP32 microcontroller with weighted pieces).
+      </p>
+
+      <h3 style="margin-top: 24px; color: #aaffcc;">KNIGHT (RATSU)</h3>
+      <p>
+        Modeled and designed in Siemens NX. Features a simple mechanism: when the piece
+        is lifted, the horse's legs extend outward via a shaft — and retract when placed
+        back on the board.
+      </p>
+      <div class="img-grid cols-2">
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/oW8f956kfwo')">
+          <img src="images/image15.jpg" alt="Knight render" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/VmO_JhmVCO8')">
+          <img src="images/image16.jpg" alt="Knight mechanism" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 30px; color: #aaffcc;">BISHOP (LÄHETTI)</h3>
+      <div class="img-grid cols-2">
+        <img src="images/image17.jpeg" alt="Bishop render 1" />
+        <img src="images/image18.png"  alt="Bishop render 2" />
+      </div>
+    </div>
+
+    <p class="subsection-title">// PRODUCT DESIGN</p>
+    <div class="project">
+      <h3>NOISE-CANCELING SPEAKER</h3>
+      <p>
+        In a product design course, my task was to design a new technological product with
+        market demand. My concept: a smart speaker sold to property owners or businesses
+        near constant low-frequency noise sources (railways, airports, amusement parks).
+        The speaker cancels repetitive low-frequency rumble using AI, a PID controller,
+        and active noise cancellation. The product design included a full 3D model — below
+        are several design iterations and a product presentation video.
+      </p>
+      <div class="img-grid cols-2">
+        <img src="images/image19.png" alt="Speaker design iteration 1" />
+        <img src="images/image20.png" alt="Speaker design iteration 2" />
+        <img src="images/image21.png" alt="Speaker design iteration 3" />
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/c1oN9Eom-zY')">
+          <img src="images/image22.jpg" alt="Speaker product video thumbnail" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">// OTHER CAD MODELS</p>
+    <div class="project">
+      <h3>OTHER CAD MODELS</h3>
+      <div class="img-grid cols-2">
+        <img src="images/image23.png" alt="CAD model 1" />
+        <img src="images/image24.png" alt="CAD model 2" />
+        <img src="images/image25.png" alt="CAD model 3" />
+        <div class="vid-thumb" onclick="openModal('https://www.youtube.com/embed/CHUkbBb-v3c')">
+          <img src="images/image26.jpg" alt="Other CAD video thumbnail" />
+          <div class="play-btn"><div class="play-icon"></div></div>
+          <span class="play-label">CLICK TO WATCH</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════
+       COBRA MEDICAL
+  ════════════════════════════════════ -->
+  <section class="section" id="cobra">
+    <h2 class="section-title">COBRA MEDICAL OY</h2>
+    <div class="cobra-placeholder">
+      <div class="lock">🔒</div>
+      <h3>CONTENT COMING SOON</h3>
+      <p>
+        I am part of the product development team at Cobra Medical Oy, a medical technology
+        startup. I have designed the valve structure for their automatic tourniquet and
+        built its prototype. Due to an NDA, images and details cannot be published here yet.
+        Check back later — this section will be updated as information becomes releasable.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    &copy; 2025 JEREMIA HAAPASALMI &nbsp;|&nbsp;
+    <a href="https://github.com/Jereeli" target="_blank">GITHUB</a>
+    &nbsp;|&nbsp;
+    <a href="mailto:jeremia.haapasalmi@gmail.com">EMAIL</a>
+  </p>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div class="modal-backdrop" id="videoModal" onclick="closeModal(event)">
+  <div class="modal-inner">
+    <button class="close-btn" onclick="closeModal()">[ X ] CLOSE</button>
+    <iframe id="modalIframe"
+      src=""
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<script>
+  function openModal(url) {
+    document.getElementById('modalIframe').src = url + '?autoplay=1&rel=0';
+    document.getElementById('videoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(e) {
+    if (e && e.target !== document.getElementById('videoModal') && !e.target.classList.contains('close-btn')) return;
+    document.getElementById('modalIframe').src = '';
+    document.getElementById('videoModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal({}); });
+  // Fix close on Escape: override the guard
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('modalIframe').src = '';
+      document.getElementById('videoModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+
+</body>
+</html>
